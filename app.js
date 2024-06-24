@@ -1,5 +1,5 @@
 import express from 'express';
-import trabajosRoutes from './routes/index.js';
+import trabajosRoutes from './src/routes/index.js';
 import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
