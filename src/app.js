@@ -9,7 +9,7 @@ const __dirname = process.cwd();
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://artesanias-kalesa-back.vercel.app/',
     methods: ['GET', 'POST', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   }));
