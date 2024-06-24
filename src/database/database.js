@@ -9,6 +9,7 @@ console.log(DB_URL)
 export const sequelize = new Sequelize(DB_URL, {
   dialect: 'postgres',
   protocol: 'postgres',
+  dialectModule: require('pg'),
   dialectOptions: {
     ssl: {
       require: true,
