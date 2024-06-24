@@ -9,10 +9,10 @@ const __dirname = process.cwd();
 const app = express();
 
 app.use(cors({
-    origin: 'https://artesanias-kalesa-back.vercel.app/',
+    origin: 'https://artesanias-kalesa-back.vercel.app',
     methods: ['GET', 'POST', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-  }));
+}));
 
 //middlewares
 app.use(express.json())

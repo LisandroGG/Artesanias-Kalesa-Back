@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const { DB_URL } = process.env;
+console.log(DB_URL)
 
 export const sequelize = new Sequelize(DB_URL, {
   dialect: 'postgres',
