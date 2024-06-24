@@ -8,6 +8,10 @@ const __dirname = process.cwd();
 
 const app = express();
 
+app.use(cors({
+    origin: '*'
+}))
+
 //middlewares
 app.use(express.json())
 

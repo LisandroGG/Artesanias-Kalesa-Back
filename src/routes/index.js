@@ -16,6 +16,19 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+router.get("/", (req, res) => {
+    const htmlResponse = `
+    <html>
+    <head>
+    <title>NodeJs y express en vercel</title>
+    </head>
+    <body>
+    <h1>Soy un proyecto back en vercel</h1>
+    </body>
+    </html>`;
+    res.send(htmlResponse)
+})
+
 router.get('/trabajos', getTrabajos)
 
 router.post('/trabajos', upload.single('imagen'), createTrabajo)
