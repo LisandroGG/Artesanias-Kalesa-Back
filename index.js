@@ -1,21 +1,20 @@
 import app from './app.js';
-import {sequelize} from './src/database/database.js'
+import { sequelize } from './src/database/database.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const { DB_HOST } = process.env;
+const port = process.env.PORT || 3000;
 
-const port = DB_HOST || 3000;
-
-async function main(){
+async function main() {
     try {
-        await sequelize.sync({ force: false })
-        app.listen(port);
-        console.log(`server is listening on port ${port}`);
+        await sequelize.sync({ force: false });
+        app.listen(port, () => {
+            console.log(`Server is listening on port ${port}`);
+        });
     } catch (error) {
-        console.error("conexion fallida")
+        console.error("Connection failed:", error.message);
     }
-};
+}
 
 main();
