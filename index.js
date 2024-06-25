@@ -8,12 +8,20 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const __dirname = process.cwd();
 const app = express();
 const port = process.env.PORT || 3000;
+const deploy = process.env.FRONT_DEPLOY;
+const local = process.env.LOCALHOST
 
+const allowedOrigins = [`${deploy}`, `${local}`];
 app.use(cors({
-    origin: '*'
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
 }));
 
 
