@@ -13,16 +13,17 @@ const port = process.env.PORT || 3000;
 const deploy = process.env.FRONT_DEPLOY;
 const local = process.env.LOCALHOST
 
-const allowedOrigins = ['https://artesanias-kalesa.vercel.app'];
-app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    }
-}));
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", `${deploy}`);
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+    res.setHeader("Permissions-Policy", "ch-ua-form-factor");
+    next();
+  });
 
 
 app.use(express.json());
