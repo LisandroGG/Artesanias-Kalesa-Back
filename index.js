@@ -13,7 +13,7 @@ const port = process.env.PORT || 3000;
 const deploy = process.env.FRONT_DEPLOY;
 const local = process.env.LOCALHOST
 
-const allowedOrigins = [`${deploy}`, `${local}`];
+const allowedOrigins = ['https://artesanias-kalesa.vercel.app'];
 app.use(cors({
     origin: function (origin, callback) {
         if (!origin || allowedOrigins.includes(origin)) {
