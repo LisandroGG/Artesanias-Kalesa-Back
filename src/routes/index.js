@@ -5,9 +5,11 @@ import {getTrabajos, createTrabajo, deleteTrabajo} from '../controllers/trabajos
 
 const router = Router()
 
+const uploadDir = path.join('/tmp', 'uploads');
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/');
+        cb(null, uploadDir); 
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname));
