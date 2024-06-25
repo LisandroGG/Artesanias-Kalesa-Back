@@ -8,22 +8,16 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const corsOptions = {
+    origin: '*',
+    credentials: true,
+    optionSuccessStatus: 200,
+}
+
 const app = express();
 const port = process.env.PORT || 3000;
-const deploy = process.env.FRONT_DEPLOY;
-const local = process.env.LOCALHOST
 
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", `${deploy}`);
-    res.header("Access-Control-Allow-Credentials", "true");
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
-    res.setHeader("Permissions-Policy", "ch-ua-form-factor");
-    next();
-  });
+app.use(cors(corsOptions))
 
 
 app.use(express.json());
