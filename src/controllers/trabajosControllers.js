@@ -1,5 +1,4 @@
 import {Trabajo} from '../models/trabajos.js'
-import cloudinary from 'cloudinary';
 import fs from 'fs';
 import path from 'path';
 
@@ -14,30 +13,20 @@ export const getTrabajos = async(req, res) => {
 
 export const createTrabajo = async (req, res) => {
     const { nombre, descripcion } = req.body;
-  
+    const imagen = req.file ? `/uploads/${req.file.filename}` : null;
+
     try {
-      let imagenUrl = null;
-  
-      if (req.file) {
-        const result = await cloudinary.v2.uploader.upload(req.file.buffer, {
-          folder: 'uploads',
-          public_id: `${Date.now()}_${path.parse(req.file.originalname).name}`
+        const newTrabajo = await Trabajo.create({
+            nombre,
+            descripcion,
+            imagen
         });
-  
-        imagenUrl = result.secure_url;
-      }
-  
-      const newTrabajo = await Trabajo.create({
-        nombre,
-        descripcion,
-        imagen: imagenUrl
-      });
-  
-      res.json(newTrabajo);
+
+        res.json(newTrabajo);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
-  };
+};
 
 export const deleteTrabajo = async(req, res) => {
 
