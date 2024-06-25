@@ -5,10 +5,18 @@ import fs from 'fs';
 import path from 'path';
 import { sequelize } from './src/database/database.js';
 import dotenv from 'dotenv';
+import cloudinary from 'cloudinary'
 
 dotenv.config();
 
 const app = express();
+
+cloudinary.v2.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD,
+    api_key: process.env.CLOUDINARY_KEY,
+    api_secret: process.env.CLOUDINARY_PRIVATE
+});
+
 const port = process.env.PORT || 3000;
 
 app.use(cors())
