@@ -19,19 +19,29 @@ export const createTrabajo = async (req, res) => {
     try {
         let uploadResult = null;
         if (imagen) {
-            uploadResult = await cloudinary.uploader.upload(imagen.path, {
-                folder: 'trabajos'
+            uploadResult = await new Promise((resolve, reject) => {
+                const stream = cloudinary.uploader.upload_stream(
+                    { folder: 'trabajos' },
+                    (error, result) => {
+                        if (error) {
+                            return reject(error);
+                        }
+                        resolve(result);
+                    }
+                );
+                stream.end(imagen.buffer);
             });
         }
 
         const newTrabajo = await Trabajo.create({
             nombre,
             descripcion,
-            imagen: uploadResult ? uploadResult.secure_url : null
+            imagen: uploadResult ? uploadResult.secure_url : null,
         });
 
         res.json(newTrabajo);
     } catch (error) {
+        console.error('Error al crear trabajo:', error);
         return res.status(500).json({ message: error.message });
     }
 };

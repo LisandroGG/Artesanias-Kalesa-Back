@@ -15,7 +15,6 @@ app.use(express.json());
 
 app.use(trabajosRoutes);
 
-
 async function main() {
     try {
         await sequelize.sync({ force: false });

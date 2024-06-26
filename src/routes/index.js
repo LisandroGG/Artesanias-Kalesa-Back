@@ -1,11 +1,8 @@
 import {Router} from 'express'
-import multer from 'multer'
+import upload from '../utils/multer.js'
 import {getTrabajos, createTrabajo, deleteTrabajo} from '../controllers/trabajosControllers.js'
 
 const router = Router()
-
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
 
 router.get('/trabajos', getTrabajos)
 
