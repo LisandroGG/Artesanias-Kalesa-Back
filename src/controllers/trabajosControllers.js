@@ -1,6 +1,7 @@
 import {Trabajo} from '../models/trabajos.js'
 import fs from 'fs';
 import path from 'path';
+import cloudinary from '../utils/cloudinary.js';
 
 export const getTrabajos = async(req, res) => {
     try {
@@ -13,13 +14,20 @@ export const getTrabajos = async(req, res) => {
 
 export const createTrabajo = async (req, res) => {
     const { nombre, descripcion } = req.body;
-    const imagen = req.file ? `/uploads/${req.file.filename}` : null;
+    const imagen = req.file;
 
     try {
+        let uploadResult = null;
+        if (imagen) {
+            uploadResult = await cloudinary.uploader.upload(imagen.path, {
+                folder: 'trabajos'
+            });
+        }
+
         const newTrabajo = await Trabajo.create({
             nombre,
             descripcion,
-            imagen
+            imagen: uploadResult ? uploadResult.secure_url : null
         });
 
         res.json(newTrabajo);
@@ -28,34 +36,28 @@ export const createTrabajo = async (req, res) => {
     }
 };
 
-export const deleteTrabajo = async(req, res) => {
-
+export const deleteTrabajo = async (req, res) => {
     try {
-        const { id } = req.params
+        const { id } = req.params;
 
         const trabajo = await Trabajo.findByPk(id);
         if (!trabajo) {
             return res.status(404).json({ message: 'Trabajo no encontrado' });
         }
 
-        const imagePath = trabajo.imagen ? path.join(process.cwd(), trabajo.imagen) : null;
+        if (trabajo.imagen) {
+            const imagePublicId = trabajo.imagen.split('/').pop().split('.')[0];
+            await cloudinary.uploader.destroy(`trabajos/${imagePublicId}`);
+        }
 
         await Trabajo.destroy({
-        where: {
-            id,
-        }
-    });
-
-    if (imagePath) {
-        fs.unlink(imagePath, (err) => {
-            if (err) {
-                console.error(`Error al eliminar la imagen: ${err.message}`);
+            where: {
+                id,
             }
         });
-    }
 
-    res.sendStatus(204)
+        res.sendStatus(204);
     } catch (error) {
-        return res.status(500).json({message: error.message})
+        return res.status(500).json({ message: error.message });
     }
-}
+};

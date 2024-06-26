@@ -1,8 +1,6 @@
 import express from 'express';
 import trabajosRoutes from './src/routes/index.js';
 import cors from 'cors';
-import fs from 'fs';
-import path from 'path';
 import { sequelize } from './src/database/database.js';
 import dotenv from 'dotenv';
 
@@ -15,22 +13,12 @@ app.use(cors())
 
 app.use(express.json());
 
-
-const uploadDir = path.join('/tmp', 'uploads');
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-app.use('/uploads', express.static(uploadDir));
-
-
 app.use(trabajosRoutes);
 
 
 async function main() {
     try {
         await sequelize.sync({ force: false });
-
 
         app.listen(port, () => {
             console.log(`Server is listening on port ${port}`);
