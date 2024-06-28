@@ -12,6 +12,10 @@ export const sequelize = new Sequelize(DB_URL, {
   protocol: 'postgres',
   dialectModule: pg,
   dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
   },
 });
 
@@ -20,7 +24,8 @@ sequelize.authenticate()
     console.log('Conexión establecida correctamente.');
   })
   .catch(err => {
-    console.error('No se pudo conectar a la base de datos:', err);
+    console.error('No se pudo conectar a la base de datos:', err.message);
+    console.error(err);
   });
 
 export default sequelize;
