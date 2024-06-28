@@ -12,10 +12,6 @@ export const sequelize = new Sequelize(DB_URL, {
   protocol: 'postgres',
   dialectModule: pg,
   dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false,
-    },
   },
 });
 
