@@ -25,7 +25,16 @@ sequelize.authenticate()
   })
   .catch(err => {
     console.error('No se pudo conectar a la base de datos:', err.message);
-    console.error(err);
+    console.error('Detalles del error:', err);
+    console.error('Configuración utilizada:', {
+      DB_URL,
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
+      },
+    });
   });
 
 export default sequelize;
